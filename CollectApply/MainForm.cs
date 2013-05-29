@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using OpenPOP.POP3;
-
+using Utils;
 namespace CollectApply
 {
     public partial class MainForm : Form
@@ -155,6 +155,62 @@ namespace CollectApply
             else
             {
             }
+        }
+
+        private void ToolStripMenuItemGetAllMails_Click(object sender, EventArgs e)
+        {
+            if (this.backgroundWorkerGetAllMails.IsBusy)
+            {
+            }
+            else
+            {
+                this.backgroundWorkerGetAllMails.RunWorkerAsync();
+            }
+        }
+
+        private void backgroundWorkerGetAllMails_DoWork(object sender, DoWorkEventArgs e)
+        {
+            Utility.Log = true;
+            popClient.Disconnect();
+            popClient.Connect(config.ServerAddr, int.Parse(config.Port));
+            popClient.Authenticate(config.Email, config.PWD);
+            int Count = popClient.GetMessageCount();
+            int percent=0;
+            backgroundWorkerGetAllMails.ReportProgress(-1, Count);
+            for (int i = Count; i > 0; i--)
+            {
+
+                OpenPOP.MIMEParser.Message m = popClient.GetMessage(i, false);
+                percent=percent+1;
+                if (m != null)
+                {
+                    backgroundWorkerGetAllMails.ReportProgress((int)percent / Count, m);
+                }
+            }
+        }
+
+        private void backgroundWorkerGetAllMails_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            if (e.ProgressPercentage == -1)
+            {
+                int count =(int)( e.UserState);
+                WriteLog("返回邮件总数："+count);
+            }
+            else
+            {
+                
+                OpenPOP.MIMEParser.Message m = e.UserState as OpenPOP.MIMEParser.Message;
+                ApplyItem item = ApplyItemController.getApplyItem(m);
+                if (item != null)
+                {
+                    WriteLog(item.ToString());
+                }
+            }
+        }
+
+        private void backgroundWorkerGetAllMails_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+
         }       
     }
 }

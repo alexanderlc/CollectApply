@@ -1,4 +1,5 @@
-﻿namespace CollectApply
+﻿using Utils;
+namespace CollectApply
 {
     partial class MainForm
     {
@@ -34,13 +35,16 @@
             this.ToolStripMenuItemConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemLog = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemOperation = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemGetAllMails = new System.Windows.Forms.ToolStripMenuItem();
             this.查看ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemOpenFolder = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemAbout = new System.Windows.Forms.ToolStripMenuItem();
-            this.listViewLog = new Utils.DoubleBufferListView();
+            this.listViewLog = new DoubleBufferListView();
             this.columnHeaderTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderEvent = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.backgroundWorkerGetAllMails = new System.ComponentModel.BackgroundWorker();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -56,6 +60,7 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripMenuItemSystem,
+            this.ToolStripMenuItemOperation,
             this.查看ToolStripMenuItem,
             this.ToolStripMenuItemHelp});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -77,23 +82,38 @@
             // ToolStripMenuItemConfig
             // 
             this.ToolStripMenuItemConfig.Name = "ToolStripMenuItemConfig";
-            this.ToolStripMenuItemConfig.Size = new System.Drawing.Size(152, 22);
+            this.ToolStripMenuItemConfig.Size = new System.Drawing.Size(124, 22);
             this.ToolStripMenuItemConfig.Text = "系统配置";
             this.ToolStripMenuItemConfig.Click += new System.EventHandler(this.ToolStripMenuItemConfig_Click);
             // 
             // ToolStripMenuItemLog
             // 
             this.ToolStripMenuItemLog.Name = "ToolStripMenuItemLog";
-            this.ToolStripMenuItemLog.Size = new System.Drawing.Size(152, 22);
+            this.ToolStripMenuItemLog.Size = new System.Drawing.Size(124, 22);
             this.ToolStripMenuItemLog.Text = "查看日志";
             this.ToolStripMenuItemLog.Click += new System.EventHandler(this.ToolStripMenuItemLog_Click);
             // 
             // ToolStripMenuItemExit
             // 
             this.ToolStripMenuItemExit.Name = "ToolStripMenuItemExit";
-            this.ToolStripMenuItemExit.Size = new System.Drawing.Size(152, 22);
+            this.ToolStripMenuItemExit.Size = new System.Drawing.Size(124, 22);
             this.ToolStripMenuItemExit.Text = "退出";
             this.ToolStripMenuItemExit.Click += new System.EventHandler(this.ToolStripMenuItemExit_Click);
+            // 
+            // ToolStripMenuItemOperation
+            // 
+            this.ToolStripMenuItemOperation.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ToolStripMenuItemGetAllMails});
+            this.ToolStripMenuItemOperation.Name = "ToolStripMenuItemOperation";
+            this.ToolStripMenuItemOperation.Size = new System.Drawing.Size(44, 21);
+            this.ToolStripMenuItemOperation.Text = "操作";
+            // 
+            // ToolStripMenuItemGetAllMails
+            // 
+            this.ToolStripMenuItemGetAllMails.Name = "ToolStripMenuItemGetAllMails";
+            this.ToolStripMenuItemGetAllMails.Size = new System.Drawing.Size(124, 22);
+            this.ToolStripMenuItemGetAllMails.Text = "获取邮件";
+            this.ToolStripMenuItemGetAllMails.Click += new System.EventHandler(this.ToolStripMenuItemGetAllMails_Click);
             // 
             // 查看ToolStripMenuItem
             // 
@@ -147,7 +167,15 @@
             // columnHeaderEvent
             // 
             this.columnHeaderEvent.Text = "事件";
-            this.columnHeaderEvent.Width = 514;
+            this.columnHeaderEvent.Width = 2000;
+            // 
+            // backgroundWorkerGetAllMails
+            // 
+            this.backgroundWorkerGetAllMails.WorkerReportsProgress = true;
+            this.backgroundWorkerGetAllMails.WorkerSupportsCancellation = true;
+            this.backgroundWorkerGetAllMails.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerGetAllMails_DoWork);
+            this.backgroundWorkerGetAllMails.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorkerGetAllMails_ProgressChanged);
+            this.backgroundWorkerGetAllMails.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerGetAllMails_RunWorkerCompleted);
             // 
             // MainForm
             // 
@@ -181,9 +209,12 @@
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemOpenFolder;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemHelp;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemAbout;
-        private Utils.DoubleBufferListView listViewLog;
+        private DoubleBufferListView listViewLog;
         private System.Windows.Forms.ColumnHeader columnHeaderEvent;
         private System.Windows.Forms.ColumnHeader columnHeaderTime;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemOperation;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemGetAllMails;
+        private System.ComponentModel.BackgroundWorker backgroundWorkerGetAllMails;
     }
 }
 
