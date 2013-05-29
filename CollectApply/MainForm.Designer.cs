@@ -30,6 +30,8 @@ namespace CollectApply
         private void InitializeComponent()
         {
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabelMsg = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.ToolStripMenuItemSystem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemConfig = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,16 +47,34 @@ namespace CollectApply
             this.columnHeaderTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderEvent = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.backgroundWorkerGetAllMails = new System.ComponentModel.BackgroundWorker();
+            this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
             // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabelMsg,
+            this.toolStripProgressBar});
             this.statusStrip1.Location = new System.Drawing.Point(0, 298);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(656, 22);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabelMsg
+            // 
+            this.toolStripStatusLabelMsg.AutoSize = false;
+            this.toolStripStatusLabelMsg.Name = "toolStripStatusLabelMsg";
+            this.toolStripStatusLabelMsg.Size = new System.Drawing.Size(150, 17);
+            this.toolStripStatusLabelMsg.Text = "就绪";
+            this.toolStripStatusLabelMsg.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // toolStripProgressBar
+            // 
+            this.toolStripProgressBar.Name = "toolStripProgressBar";
+            this.toolStripProgressBar.Size = new System.Drawing.Size(300, 16);
+            this.toolStripProgressBar.Visible = false;
             // 
             // menuStrip1
             // 
@@ -192,6 +212,8 @@ namespace CollectApply
             this.Text = "在线融资申请邮件收集器";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -217,6 +239,8 @@ namespace CollectApply
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemOperation;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemGetAllMails;
         private System.ComponentModel.BackgroundWorker backgroundWorkerGetAllMails;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelMsg;
+        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar;
     }
 }
 

@@ -17,7 +17,7 @@ namespace CollectApply
         private string log_name = ".\\log.txt";
         private StreamWriter logFileWriter;             //写日志     
         private ConfigData config;
-        private string configName = "sysconf.ini";
+        private string configName = "sysconf.sys";
         private POPClient popClient;
 
         #endregion
@@ -187,14 +187,15 @@ namespace CollectApply
                 if (item != null)
                 {
                     list.Add(item);
-                    backgroundWorkerGetAllMails.ReportProgress((int)percent / Count, item);
+                   
                 }
+                backgroundWorkerGetAllMails.ReportProgress((int)percent*100 / Count, item);
             }
             for (int k = 0; k < list.Count; k++)
             {
 
             }
-            String path = Application.StartupPath + "\\Excel\\"+DateTime.Now.ToString("yyyyMMdd_HHMMSS")+".xls";
+            String path = Application.StartupPath + "\\Excel\\"+DateTime.Now.ToString("yyyyMMdd_HHmmss")+".xls";
             ExcelCreator ec = new ExcelCreator();
             if (ec.toExcel(list, path))
             {
@@ -216,8 +217,14 @@ namespace CollectApply
             }
             else
             {
-                ApplyItem item = e.UserState as ApplyItem;               
-                WriteLog(item.ToString());
+                this.toolStripProgressBar.Visible = true;
+                this.toolStripProgressBar.Value = e.ProgressPercentage;
+                this.toolStripStatusLabelMsg.Text = "正在处理，" + e.ProgressPercentage + "%";
+                ApplyItem item = e.UserState as ApplyItem;
+                if (item != null)
+                {
+                    WriteLog(item.ToString());
+                }
                
             }
         }
@@ -227,9 +234,11 @@ namespace CollectApply
             String res = e.Result.ToString();
             if (!res.StartsWith("ER:"))
             {
+             
                 WriteLog(res);
             }
-
+            this.toolStripStatusLabelMsg.Text = "完成";
+            this.toolStripProgressBar.Visible = false;
         }
 
         private void listViewLog_MouseDoubleClick(object sender, MouseEventArgs e)
