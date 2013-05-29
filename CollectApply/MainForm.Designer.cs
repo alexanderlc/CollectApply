@@ -153,11 +153,13 @@ namespace CollectApply
             this.listViewLog.FullRowSelect = true;
             this.listViewLog.GridLines = true;
             this.listViewLog.Location = new System.Drawing.Point(0, 25);
+            this.listViewLog.MultiSelect = false;
             this.listViewLog.Name = "listViewLog";
             this.listViewLog.Size = new System.Drawing.Size(656, 273);
             this.listViewLog.TabIndex = 2;
             this.listViewLog.UseCompatibleStateImageBehavior = false;
             this.listViewLog.View = System.Windows.Forms.View.Details;
+            this.listViewLog.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listViewLog_MouseDoubleClick);
             // 
             // columnHeaderTime
             // 

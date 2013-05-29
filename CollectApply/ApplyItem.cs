@@ -47,7 +47,10 @@ namespace CollectApply
         {
             map.Add(key, value);
         }
-        
+        public String getValue(String key)
+        {
+            return map[key];
+        }
         public override String ToString()
         {
             String res = "From=" + mFrom + "; \n\rDate="+getDate();

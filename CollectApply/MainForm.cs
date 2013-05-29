@@ -177,16 +177,34 @@ namespace CollectApply
             int Count = popClient.GetMessageCount();
             int percent=0;
             backgroundWorkerGetAllMails.ReportProgress(-1, Count);
+            List<ApplyItem> list = new List<ApplyItem>();
             for (int i = Count; i > 0; i--)
             {
 
                 OpenPOP.MIMEParser.Message m = popClient.GetMessage(i, false);
+                ApplyItem item = ApplyItemController.getApplyItem(m);
                 percent=percent+1;
-                if (m != null)
+                if (item != null)
                 {
-                    backgroundWorkerGetAllMails.ReportProgress((int)percent / Count, m);
+                    list.Add(item);
+                    backgroundWorkerGetAllMails.ReportProgress((int)percent / Count, item);
                 }
             }
+            for (int k = 0; k < list.Count; k++)
+            {
+
+            }
+            String path = Application.StartupPath + "\\Excel\\"+DateTime.Now.ToString("yyyyMMdd_HHMMSS")+".xls";
+            ExcelCreator ec = new ExcelCreator();
+            if (ec.toExcel(list, path))
+            {
+                e.Result = "path:"+path;
+            }
+            else
+            {
+                e.Result = "ER:生成excel失败";
+            }
+          
         }
 
         private void backgroundWorkerGetAllMails_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -198,19 +216,34 @@ namespace CollectApply
             }
             else
             {
-                
-                OpenPOP.MIMEParser.Message m = e.UserState as OpenPOP.MIMEParser.Message;
-                ApplyItem item = ApplyItemController.getApplyItem(m);
-                if (item != null)
-                {
-                    WriteLog(item.ToString());
-                }
+                ApplyItem item = e.UserState as ApplyItem;               
+                WriteLog(item.ToString());
+               
             }
         }
 
         private void backgroundWorkerGetAllMails_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            String res = e.Result.ToString();
+            if (!res.StartsWith("ER:"))
+            {
+                WriteLog(res);
+            }
 
+        }
+
+        private void listViewLog_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (listViewLog.SelectedItems.Count > 0)
+            {
+                String path=listViewLog.SelectedItems[0].SubItems[1].Text;
+                if (path.StartsWith("path:"))
+                {
+                    String filePath = path.Replace("path:", "");
+                    System.Diagnostics.Process.Start(filePath);
+                }
+
+            }
         }       
     }
 }

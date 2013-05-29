@@ -28,6 +28,7 @@ namespace CollectApply
                     item.Time = m.Date;
                     item.From = m.From;
                     item.Title = m.Subject;
+                    item.FromEmail = m.FromEmail;
                     return item;
                 }
                 else
